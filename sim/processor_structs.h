@@ -14,7 +14,7 @@ typedef struct Inst {
 	int		src_reg_2;					// from parsing
 	int		dst_reg;					// from parsing
 	int		opcode;						// from parsing
-	int		cycle_issue;
+	int		cycle_issued;
 	int		cycle_read_operands;
 	int		cycle_execute_end;
 	int		cycle_write_result;

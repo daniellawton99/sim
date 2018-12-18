@@ -9,8 +9,6 @@
 #include "processor_structs.h"
 #include "inst_queue.h"
 
-
-
 // MACROS
 
 #define MAX_LENGTH_UNIT_NAME  10
@@ -62,18 +60,18 @@ int Issue(Inst *inst)
 		if (&(func_unit_table.func_unit_list + i)->type == inst->opcode) {	// unit's type fitting
 			if (&(func_unit_table.func_unit_list + i)->busy == false) {		// unit not busy
 				//issue
-				free_unit = &(func_unit_table_next_cycle.func_unit_list + i);
-				free_unit->busy						= true;
-				free_unit->dst_reg					= inst->dst_reg;
-				free_unit->src_reg_1				= inst->src_reg_1;
-				free_unit->src_reg_2				= inst->src_reg_2;
-				free_unit->src_reg_1_ready			= (reg_result_table[inst->src_reg_1] == NULL) ? true : false;
-				free_unit->src_reg_2_ready			= (reg_result_table[inst->src_reg_2] == NULL) ? true : false;
+				free_unit = func_unit_table_next_cycle.func_unit_list + i;
+				free_unit->busy							= true;
+				free_unit->dst_reg						= inst->dst_reg;
+				free_unit->src_reg_1					= inst->src_reg_1;
+				free_unit->src_reg_2					= inst->src_reg_2;
+				free_unit->src_reg_1_ready				= (reg_result_table[inst->src_reg_1] == NULL) ? true : false;
+				free_unit->src_reg_2_ready				= (reg_result_table[inst->src_reg_2] == NULL) ? true : false;
 				strcpy(free_unit->producing_unit_src_reg_1,reg_result_table[inst->src_reg_1]);
 				strcpy(free_unit->producing_unit_src_reg_2,reg_result_table[inst->src_reg_2]);
 				strcpy(&reg_result_table_next_cycle[inst->dst_reg], free_unit->unit);
-				free_unit->current_inst				= *inst;
-				free_unit->current_inst.issue_cycle = clk_cycle;
+				free_unit->current_inst					= *inst;
+				free_unit->current_inst.cycle_issued	= clk_cycle;
 			}
 		}
 	}
@@ -108,12 +106,12 @@ int main()
 			pc += 1;
 		}
 
-		// ISSUE	(only one instruction can be waiting to be issued)
-		if ((inst_queue.buffer[inst_queue.head-1])->opcode == HALT) {
+		// ISSUE    (only one instruction can be waiting to be issued)
+		if ((inst_queue.buffer[inst_queue.tail]).opcode == HALT) {
 			InstQueuePop(&inst_queue_next_cycle, &inst_queue_next_cycle, &next_inst_to_issue);
 			halt_issued = true;
 		}
-		else if(IssuePossible(&inst_queue[inst_queue.head - 1]){
+		else if(IssuePossible(&(inst_queue.buffer)[inst_queue.tail])){
 			InstQueuePop(&inst_queue_next_cycle, &inst_queue_next_cycle, &next_inst_to_issue);
 			Issue(&next_inst_to_issue); 
 		}
