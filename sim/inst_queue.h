@@ -1,6 +1,7 @@
 #ifndef _INST_QUEUE_
 #define _INST_QUEUE_
 
+#define _CRT_SECURE_NO_WARNINGS
 
 // Library Includes
 #include <stdio.h>

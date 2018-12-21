@@ -1,4 +1,6 @@
 
+#define _CRT_SECURE_NO_WARNINGS
+
 // Library Includes
 #include<stdio.h>
 #include<stdlib.h>
@@ -8,6 +10,7 @@
 // Module Includes
 #include "processor_structs.h"
 #include "inst_queue.h"
+#include "sim_parsing_functions.h"
 
 // MACROS
 
@@ -91,7 +94,7 @@ int main()
 	Inst finished_inst[4096];					// array of finished instructions
 	
 	// Read Memory
-
+	ReadMemoryIntoMemArray("C:\Users\Daniel\Desktop\example_281118\memin.txt", &mem);
 	// Read Configuration
 
 
@@ -121,6 +124,9 @@ int main()
 		// next cycle updates
 		inst_queue = inst_queue_next_cycle;
 	}
+
+
+	// memory disambiguation!!!
 
 	//free(unit_table); // FIXME 
 }

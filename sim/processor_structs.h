@@ -2,6 +2,8 @@
 #ifndef _PROCESSOR_STRUCTS_
 #define _PROCESSOR_STRUCTS_
 
+#define _CRT_SECURE_NO_WARNINGS
+
 #include<stdbool.h>
 #include<stdlib.h>
 
