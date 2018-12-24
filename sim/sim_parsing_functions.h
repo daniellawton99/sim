@@ -5,12 +5,16 @@
 
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 
+#include "processor_structs.h"
 
-#define LINE_LEN 9
+#define LINE_LEN 10
 
 
 int ReadMemoryIntoMemArray(char *filename, int *mem);
+
+int CreateInst(Inst* inst, int memory_entry, int pc);
 
 
 

@@ -4,8 +4,8 @@
 // Library Includes
 #include<stdio.h>
 #include<stdlib.h>
-#include<stdbool.h>
 #include<string.h>
+#include<stdbool.h>
 
 // Module Includes
 #include "processor_structs.h"
@@ -13,9 +13,6 @@
 #include "sim_parsing_functions.h"
 
 // MACROS
-
-#define MAX_LENGTH_UNIT_NAME  10
-
 #define LD 		0
 #define ST 		1
 #define ADD 	2
@@ -32,8 +29,8 @@ InstQueue				inst_queue_next_cycle;			// The Instruction Queue state at next clk
 // Scoreboard
 FuncUnitStatusTable		func_unit_table;				// The functional unit status table (of the scoreboard implementation) 
 FuncUnitStatusTable		func_unit_table_next_cycle;
-char*					reg_result_table[16][MAX_LENGTH_UNIT_NAME];		// point to NULL or name of unit
-char*					reg_result_table_next_cycle[16][MAX_LENGTH_UNIT_NAME];
+Reg						reg_result_table[16];			// point to NULL or name of unit
+Reg						reg_result_table_next_cycle[16];
 
 bool IssuePossible(Inst *inst)
 {
@@ -94,14 +91,14 @@ int main()
 	Inst finished_inst[4096];					// array of finished instructions
 	
 	// Read Memory
-	ReadMemoryIntoMemArray("C:\Users\Daniel\Desktop\example_281118\memin.txt", &mem);
+	ReadMemoryIntoMemArray("C:\\Users\\Daniel\\Desktop\\example_281118\\memin.txt", &mem);
 	// Read Configuration
 
 
 	while (1) {
 		// FETCH
 		if (inst_queue.num_inst_in_queue < INST_QUEUE_SIZE && halt_fetched==false) {
-			CreateInst(&next_inst_to_fetch, mem[pc]);
+			CreateInst(&next_inst_to_fetch, mem[pc], pc);
 			InstQueuePush(&inst_queue_next_cycle, &inst_queue_next_cycle, &next_inst_to_fetch);
 			if (next_inst_to_fetch.opcode == HALT) {
 				halt_fetched = true;
@@ -110,13 +107,16 @@ int main()
 		}
 
 		// ISSUE    (only one instruction can be waiting to be issued)
-		if ((inst_queue.buffer[inst_queue.tail]).opcode == HALT) {
-			InstQueuePop(&inst_queue_next_cycle, &inst_queue_next_cycle, &next_inst_to_issue);
-			halt_issued = true;
-		}
-		else if(IssuePossible(&(inst_queue.buffer)[inst_queue.tail])){
-			InstQueuePop(&inst_queue_next_cycle, &inst_queue_next_cycle, &next_inst_to_issue);
-			Issue(&next_inst_to_issue); 
+		if (inst_queue.num_inst_in_queue > 0)
+		{
+			if ((inst_queue.buffer[inst_queue.tail]).opcode == HALT) {
+				InstQueuePop(&inst_queue_next_cycle, &inst_queue_next_cycle, &next_inst_to_issue);
+				halt_issued = true;
+			}
+			else if (IssuePossible(&(inst_queue.buffer)[inst_queue.tail])) {
+				InstQueuePop(&inst_queue_next_cycle, &inst_queue_next_cycle, &next_inst_to_issue);
+				Issue(&next_inst_to_issue);
+			}
 		}
 
 		// 

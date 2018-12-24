@@ -6,6 +6,7 @@
 
 #include<stdbool.h>
 #include<stdlib.h>
+#include<stdbool.h>
 
 #define MAX_LENGTH_UNIT_NAME  10
 
@@ -40,6 +41,11 @@ typedef struct FuncUnit {
 	Inst	current_inst;
 } FuncUnit;
 
+typedef struct Reg {
+	bool reg_expectes_update;
+	char updating_unit[MAX_LENGTH_UNIT_NAME];
+	float value;
+};
 
 typedef struct FuncUnitStatusTable {
 	int			num_of_units;
