@@ -55,12 +55,12 @@ int CreateInst(Inst* inst, int memory_entry, int pc)
 	imm_str[3] = '\0';
 
 	// src_reg_1_str
-	src_reg_1_str[0] = inst_str[4];
-	src_reg_1_str[1] = '\0';
+	src_reg_2_str[0] = inst_str[4];
+	src_reg_2_str[1] = '\0';
 	
 	// src_reg_2_str
-	src_reg_2_str[0] = inst_str[3];
-	src_reg_2_str[1] = '\0';
+	src_reg_1_str[0] = inst_str[3];
+	src_reg_1_str[1] = '\0';
 
 	// dst_reg_str
 	dst_reg_str[0] = inst_str[2];
